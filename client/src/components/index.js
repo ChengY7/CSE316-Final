@@ -10,6 +10,7 @@ import Top5Item from './Top5Item'
 import WorkspaceScreen from './WorkspaceScreen'
 import LoginScreen from './LoginScreen'
 import BasicModal from './BasicModal'
+import Toolbar from './Toolbar'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -28,4 +29,5 @@ export {
     Statusbar, 
     Top5Item, 
     WorkspaceScreen,
-    BasicModal }
+    BasicModal,
+    Toolbar }

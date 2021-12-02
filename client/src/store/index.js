@@ -216,11 +216,19 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
+        
+        console.log(auth.user)
         let newListName = "Untitled" + store.newListCounter;
         let payload = {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
-            ownerEmail: auth.user.email
+            ownerEmail: auth.user.email,
+            ownerUserName: auth.user.userName,
+            likes: [],
+            dislikes: [],
+            views: "0",
+            date: new Date(),
+            published: false
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {

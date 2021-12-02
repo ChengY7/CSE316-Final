@@ -10,7 +10,8 @@ getLoggedIn = async (req, res) => {
             user: {
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
-                email: loggedInUser.email
+                email: loggedInUser.email,
+                userName: loggedInUser.userName
             }
         }).send();
     })
@@ -20,7 +21,7 @@ logoutUser = async (req, res) => {
 }
 loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, userName } = req.body;
         if ( !email || !password ) {
             return res
                 .status(400)
@@ -58,7 +59,8 @@ loginUser = async (req, res) => {
             user: {
                 firstName: existingUser.firstName,
                 lastName: existingUser.lastName,
-                email: existingUser.email
+                email: existingUser.email,
+                userName: existingUser.userName
             }
         }).send();
     } catch (err) {

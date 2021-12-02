@@ -127,7 +127,13 @@ getTop5ListPairs = async (req, res) => {
                 let pair = {
                     _id: list._id,
                     name: list.name,
-                    ownerEmail: list.ownerEmail
+                    ownerEmail: list.ownerEmail,
+                    ownerUserName: list.ownerUserName,
+                    views: list.views,
+                    likes: list.likes,
+                    dislikes: list.dislikes,
+                    date: list.date,
+                    published: list.published
                 };
                 //console.log(pair.ownerEmail + " " + req.body);
                 //if (pair.ownerEmail===req.ownerEmail) {

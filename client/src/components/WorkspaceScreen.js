@@ -38,7 +38,13 @@ function WorkspaceScreen() {
         <div id="top5-workspace">
             <Toolbar />
             <div id="workspace-edit">
-                <div style={{backgroundColor:"white", width:"480px", position:"absolute", top:"6px", height:"24px", left: "24px", fontSize:"20px", fontWeight: "bold"}}>{listName}</div>
+                <div style={{cursor: "pointer", backgroundColor:"white", width:"480px", position:"absolute", top:"6px", height:"24px", left: "24px", fontSize:"20px", fontWeight: "bold", borderRadius: "2px"}}>{listName}</div>
+                <button style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
+                    Save
+                </button>
+                <button style={{position:"absolute", bottom:"12px", right:"24px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
+                    Publish
+                </button>
                 <div id="dark-purple">
                     <div id="edit-numbering">
                         <div className="item-number" style={{backgroundColor: "#d3b036", borderRadius: "10px", marginTop: '10px'}}><Typography variant="h3">1.</Typography></div>

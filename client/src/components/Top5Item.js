@@ -110,17 +110,12 @@ function Top5Item(props) {
                     handleDrop(event, (index+1))
                 }}
                 draggable="true"
-                sx={{ display: 'flex', p: 1 }}
+                sx={{ display: 'flex', p: 1, backgroundColor: "#d3b036", borderRadius: "10px", marginTop: '10px' }}
                 style={{
-                    fontSize: '48pt',
+                    fontSize: '38pt',
                     width: '100%'
                 }}
             >
-            <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'48pt'}}  />
-                </IconButton>
-            </Box>
                 <Box sx={{ p: 1, flexGrow: 1 }}>{props.text}</Box>
             </ListItem>
             if (editActive) {

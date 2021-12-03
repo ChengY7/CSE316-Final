@@ -20,6 +20,11 @@ function Top5Item(props) {
     let { index } = props;
 
     let itemClass = "top5-item";
+    function handleTempListInfo(event) {
+        let id = event.target.id.substring("item-".length)
+        console.log(event.target.value + ", "+ id)
+        store.updateTempListInfo(event.target.value, id)
+    }
 
     let itemElement =
         <TextField
@@ -28,6 +33,7 @@ function Top5Item(props) {
             className={itemClass}
             sx={{display: 'flex', marginTop:"10px", backgroundColor: "#d3b036", borderRadius: "10px"}}
             required
+            onChange={(event) => {handleTempListInfo(event)}}
             fullWidth
             defaultValue={props.text}
             inputProps={{style: {fontSize: 26, fontWeight: "bold"}}}

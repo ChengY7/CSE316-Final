@@ -23,6 +23,9 @@ function WorkspaceScreen() {
     function handleSaveList() {
         console.log()
     }
+    function handleTempListInfo(event) {
+        store.updateTempListInfo(event.target.value, 0)
+    }
     if (store.currentList) {
         listName=store.currentList.name;
         editItems = 
@@ -42,7 +45,7 @@ function WorkspaceScreen() {
         <div id="top5-workspace">
             <Toolbar />
             <div id="workspace-edit">
-                <input type="text" defaultValue={listName} style={{width:"480px", position:"absolute", top:"5px", height:"20px", left: "24px", fontSize:"20px", fontWeight: "bold"}}></input>
+                <input onChange={(event) => {handleTempListInfo(event)}} type="text" defaultValue={listName} style={{width:"480px", position:"absolute", top:"5px", height:"20px", left: "24px", fontSize:"20px", fontWeight: "bold"}}></input>
                 <button onClick={handleSaveList} style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
                     Save
                 </button>

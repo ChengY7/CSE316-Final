@@ -1,9 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import jsTPS from '../common/jsTPS'
 import api from '../api'
-import MoveItem_Transaction from '../transactions/MoveItem_Transaction'
-import UpdateItem_Transaction from '../transactions/UpdateItem_Transaction'
 import AuthContext from '../auth'
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -31,7 +28,6 @@ export const GlobalStoreActionType = {
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
-const tps = new jsTPS();
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
 // AVAILABLE TO THE REST OF THE APPLICATION
@@ -185,6 +181,19 @@ function GlobalStoreContextProvider(props) {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
+    store.UpdateList = function (id) {
+        for (let i=0; i<5; i++) {
+            if(store.currentList.items[i]!==store.tempListInfo[i+1]) {
+                store.updateItem(i, store.tempListInfo[i+1]);
+            }
+        }
+        if(store.currentList.name!==store.tempListInfo[0]) {
+            console.log("helllooo")
+            store.changeListName(id, store.tempListInfo[0])
+        }
+        store.updateCurrentList();
+        history.push("/");
+    }
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
@@ -230,10 +239,7 @@ function GlobalStoreContextProvider(props) {
             payload: {}
         });
         
-        tps.clearAllTransactions();
         history.push("/");
-        store.checkUndo();
-        store.checkRedo();
     }
     store.updateTempListInfo = function (text, index) {
         let currentTempListInfo = store.tempListInfo;
@@ -263,7 +269,6 @@ function GlobalStoreContextProvider(props) {
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
-            tps.clearAllTransactions();
             let newList = response.data.top5List;
             let tempListInfo = [newListName, "?", "?", "?", "?", "?"];
             storeReducer({
@@ -359,7 +364,6 @@ function GlobalStoreContextProvider(props) {
     //     store.checkUndo();
     // }
     store.setCurrentList = async function (id) {
-        tps.clearAllTransactions();
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
@@ -376,50 +380,10 @@ function GlobalStoreContextProvider(props) {
                 history.push("/top5list/" + top5List._id);
             }
         }
-        store.checkRedo();
-        store.checkUndo();
-    }
-
-    store.addMoveItemTransaction = function (start, end) {
-        let transaction = new MoveItem_Transaction(store, start, end);
-        tps.addTransaction(transaction);
-        store.checkRedo();
-        store.checkUndo();
-    }
-
-    store.addUpdateItemTransaction = function (index, newText) {
-        let oldText = store.currentList.items[index];
-        let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
-        tps.addTransaction(transaction);
-        store.checkRedo();
-        store.checkUndo();
-    }
-
-    store.moveItem = function (start, end) {
-        start -= 1;
-        end -= 1;
-        if (start < end) {
-            let temp = store.currentList.items[start];
-            for (let i = start; i < end; i++) {
-                store.currentList.items[i] = store.currentList.items[i + 1];
-            }
-            store.currentList.items[end] = temp;
-        }
-        else if (start > end) {
-            let temp = store.currentList.items[start];
-            for (let i = start; i > end; i--) {
-                store.currentList.items[i] = store.currentList.items[i - 1];
-            }
-            store.currentList.items[end] = temp;
-        }
-
-        // NOW MAKE IT OFFICIAL
-        store.updateCurrentList();
     }
 
     store.updateItem = function (index, newItem) {
         store.currentList.items[index] = newItem;
-        store.updateCurrentList();
     }
 
     store.updateCurrentList = async function () {
@@ -430,26 +394,6 @@ function GlobalStoreContextProvider(props) {
                 payload: store.currentList
             });
         }
-    }
-
-    store.undo = function () {
-        tps.undoTransaction();
-        store.checkRedo();
-        store.checkUndo();
-    }
-
-    store.redo = function () {
-        tps.doTransaction();
-        store.checkRedo();
-        store.checkUndo();
-    }
-
-    store.canUndo = function() {
-        return tps.hasTransactionToUndo();
-    }
-
-    store.canRedo = function() {
-        return tps.hasTransactionToRedo();
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
@@ -466,30 +410,6 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
             payload: null
         });
-    }
-    store.checkRedo = function () {
-        if (!tps.hasTransactionToRedo()) {
-            let button = document.getElementById("redo-button");
-            button.classList.add("top5-button-disabled");
-            button.style.pointerEvents='none';
-        }
-        else {
-            let button = document.getElementById("redo-button");
-            button.classList.remove("top5-button-disabled");
-            button.style.pointerEvents='auto';
-        }
-    }
-    store.checkUndo = function () {
-        if (!tps.hasTransactionToUndo()) {
-            let button = document.getElementById("undo-button");
-            button.classList.add("top5-button-disabled");
-            button.style.pointerEvents='none';
-        }
-        else {
-            let button = document.getElementById("undo-button");
-            button.classList.remove("top5-button-disabled");
-            button.style.pointerEvents='auto';
-        }
     }
 
     return (

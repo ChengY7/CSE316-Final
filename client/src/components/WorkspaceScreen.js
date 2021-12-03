@@ -20,6 +20,9 @@ function WorkspaceScreen() {
     //     store.refresh(id);
     // }
     let editItems = "";
+    function handleSaveList() {
+        console.log()
+    }
     if (store.currentList) {
         listName=store.currentList.name;
         editItems = 
@@ -40,7 +43,7 @@ function WorkspaceScreen() {
             <Toolbar />
             <div id="workspace-edit">
                 <input type="text" defaultValue={listName} style={{width:"480px", position:"absolute", top:"5px", height:"20px", left: "24px", fontSize:"20px", fontWeight: "bold"}}></input>
-                <button style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
+                <button onClick={handleSaveList} style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
                     Save
                 </button>
                 <button style={{position:"absolute", bottom:"12px", right:"24px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>

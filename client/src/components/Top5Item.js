@@ -16,40 +16,7 @@ function Top5Item(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
     const [editActive, setEditActive] = useState(false);
-    const [draggedTo, setDraggedTo] = useState(0);
     const [text, setText] = useState("");
-
-    function handleDragStart(event, targetId) {
-        event.dataTransfer.setData("item", targetId);
-    }
-
-    function handleDragOver(event) {
-        event.preventDefault();
-        setDraggedTo(true);
-    }
-
-    function handleDragEnter(event) {
-        event.preventDefault();
-        console.log("entering");
-    }
-
-    function handleDragLeave(event) {
-        event.preventDefault();
-        console.log("leaving");
-        setDraggedTo(false);
-    }
-
-    function handleDrop(event, targetId) {
-        event.preventDefault();
-        let sourceId = event.dataTransfer.getData("item");
-        sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
-        setDraggedTo(false);
-
-        console.log("handleDrop (sourceId, targetId): ( " + sourceId + ", " + targetId + ")");
-
-        // UPDATE THE LIST
-        store.addMoveItemTransaction(sourceId, targetId);
-    }
 
     function handleToggleEdit(event) {
         //console.log(auth.user.email)
@@ -85,32 +52,13 @@ function Top5Item(props) {
     let { index } = props;
 
     let itemClass = "top5-item";
-    if (draggedTo) {
-        itemClass = "top5-item-dragged-to";
-    }
 
     let itemElement =
             <ListItem
                 id={'item-' + (index+1)}
                 key={props.key}
                 className={itemClass}
-                onDragStart={(event) => {
-                    handleDragStart(event, (index+1))
-                }}
-                onDragOver={(event) => {
-                    handleDragOver(event, (index+1))
-                }}
-                onDragEnter={(event) => {
-                    handleDragEnter(event, (index+1))
-                }}
-                onDragLeave={(event) => {
-                    handleDragLeave(event, (index+1))
-                }}
-                onDrop={(event) => {
-                    handleDrop(event, (index+1))
-                }}
-                draggable="true"
-                sx={{ display: 'flex', p: 1, backgroundColor: "#d3b036", borderRadius: "10px", marginTop: '10px' }}
+                sx={{ display: 'flex', p: 1, backgroundColor: "#d3b036", borderRadius: "10px", marginTop: '10px', cursor: "pointer" }}
                 style={{
                     fontSize: '38pt',
                     width: '100%'

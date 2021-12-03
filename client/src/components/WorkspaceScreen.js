@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import { Typography } from '@mui/material'
 import { GlobalStoreContext } from '../store/index.js'
 import Toolbar from './Toolbar.js';
+import TextField from '@mui/material/TextField';
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -38,7 +39,7 @@ function WorkspaceScreen() {
         <div id="top5-workspace">
             <Toolbar />
             <div id="workspace-edit">
-                <div style={{cursor: "pointer", backgroundColor:"white", width:"480px", position:"absolute", top:"6px", height:"24px", left: "24px", fontSize:"20px", fontWeight: "bold", borderRadius: "2px"}}>{listName}</div>
+                <input type="text" defaultValue={listName} style={{width:"480px", position:"absolute", top:"5px", height:"20px", left: "24px", fontSize:"20px", fontWeight: "bold"}}></input>
                 <button style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
                     Save
                 </button>

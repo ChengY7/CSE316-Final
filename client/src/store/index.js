@@ -172,8 +172,9 @@ function GlobalStoreContextProvider(props) {
     }
     store.PublishList = function () {
         store.currentList.published=true;
+        store.currentList.publishedDate = new Date();
         store.updateCurrentList();
-        store.closeCurrentList();
+        store.UpdateList();
     }
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
@@ -280,9 +281,11 @@ function GlobalStoreContextProvider(props) {
             dislikes: [],
             views: "0",
             date: new Date(),
-            published: false
+            published: false,
+            publishedDate: null
         };
         const response = await api.createTop5List(payload);
+        console.log(response.data)
         if (response.data.success) {
             let newList = response.data.top5List;
             let tempListInfo = [newListName, "?", "?", "?", "?", "?"];

@@ -24,7 +24,13 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair } = props;
-    console.log(idNamePair)
+    const dateArray = idNamePair.publishedDate.split("-");
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    let date = dateArray[2].substring(0,2)
+    date = date.replace("0", " ")
+    let month = parseInt(dateArray[1])
+    dateArray[2]=date;
+    dateArray[1]=months[month-1]
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -124,7 +130,7 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", left: "14px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>By:</Typography>
                 <Typography display="inline" style={{position: "absolute", left: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
                 <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>
-                <Typography display="inline" style={{position: "absolute", left: "80px", bottom: "10px", color: "#69b15e"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.publishedDate}</Typography>
+                <Typography display="inline" style={{position: "absolute", left: "80px", bottom: "10px", color: "#69b15e"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{dateArray[1]+" "+dateArray[2]+", "+dateArray[0]}</Typography>
                 <Typography display="inline" style={{position: "absolute", right: "234px", bottom:"10px" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Views:</Typography>
                 <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>

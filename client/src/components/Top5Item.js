@@ -21,7 +21,6 @@ function Top5Item(props) {
     let itemClass = "top5-item";
     function handleTempListInfo(event) {
         let id = event.target.id.substring("item-".length)
-        console.log(event.target.value + ", "+ id)
         store.updateTempListInfo(event.target.value, id)
     }
 

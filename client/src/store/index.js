@@ -164,17 +164,20 @@ function GlobalStoreContextProvider(props) {
                 store.updateItem(i, store.tempListInfo[i+1]);
             }
         }
+        store.updateCurrentList();
         if(store.currentList.name!==store.tempListInfo[0]) {
-            store.changeListName(store.currentList._id, store.tempListInfo[0])
+            store.currentList.name=store.tempListInfo[0];
         }
         store.updateCurrentList();
         store.closeCurrentList();
+        console.log(store.idNamePairs)
     }
     store.PublishList = function () {
         store.currentList.published=true;
         store.currentList.publishedDate = new Date();
         store.updateCurrentList();
         store.UpdateList();
+        console.log(store.currentList.published)
     }
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
@@ -249,6 +252,14 @@ function GlobalStoreContextProvider(props) {
             payload: currentTempListInfo
         })
         let publishable = true;
+        for (let i=0; i<store.idNamePairs.length; i++) {
+            if (store.idNamePairs[i]._id!==store.currentList._id && store.idNamePairs[i].published) {
+                if (store.idNamePairs[i].name===store.tempListInfo[0]) {
+                    publishable = false;
+                    break;
+                }
+            }
+        }
         if (store.checkDuplicates(store.tempListInfo)) {
             publishable = false;
         }
@@ -285,10 +296,9 @@ function GlobalStoreContextProvider(props) {
             publishedDate: null
         };
         const response = await api.createTop5List(payload);
-        console.log(response.data)
         if (response.data.success) {
             let newList = response.data.top5List;
-            let tempListInfo = [newListName, "?", "?", "?", "?", "?"];
+            let tempListInfo = [newListName, "?", "?", "?", "?", "?", newList._id];
             storeReducer({
                 type: GlobalStoreActionType.CREATE_NEW_LIST,
                 payload: {newList, tempListInfo}
@@ -393,7 +403,7 @@ function GlobalStoreContextProvider(props) {
             }
             response = await api.updateTop5ListById(top5List._id, top5List);
             if (response.data.success) {
-                let tempListInfo = [top5List.name, top5List.items[0], top5List.items[1], top5List.items[2], top5List.items[3], top5List.items[4]]
+                let tempListInfo = [top5List.name, top5List.items[0], top5List.items[1], top5List.items[2], top5List.items[3], top5List.items[4], top5List._id]
                 storeReducer({
                     type: GlobalStoreActionType.SET_CURRENT_LIST,
                     payload: {top5List, tempListInfo}
@@ -407,6 +417,15 @@ function GlobalStoreContextProvider(props) {
                 button8.style.pointerEvents="none";
 
                 let publishable = true;
+                for (let i=0; i<store.idNamePairs.length; i++) {
+                    if (store.idNamePairs[i]._id!==tempListInfo[6] && store.idNamePairs[i].published) {
+                        if (store.idNamePairs[i].name===tempListInfo[0]) {
+                            console.log("trueeeeee")
+                            publishable = false;
+                            break;
+                        }
+                    }
+                }
                 if (store.checkDuplicates(tempListInfo)) {
                     publishable = false;
                 }

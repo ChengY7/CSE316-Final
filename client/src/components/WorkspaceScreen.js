@@ -21,8 +21,7 @@ function WorkspaceScreen() {
     // }
     let editItems = "";
     function handleSaveList(event) {
-        let id = event.target.id.substring("list-".length);
-        store.UpdateList(id);
+        store.UpdateList();
     }
     function handleTempListInfo(event) {
         store.updateTempListInfo(event.target.value, 0)

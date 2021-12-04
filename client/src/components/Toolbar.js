@@ -16,14 +16,14 @@ function Toolbar() {
 
     return (
         <div id="toolbar">
-            <HomeOutlinedIcon style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <GroupsOutlinedIcon style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <PersonOutlineOutlinedIcon style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <FunctionsOutlinedIcon style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <input type="text" style={{position: "absolute", top: "17px", width: "500px"}}>
+            <HomeOutlinedIcon id="home-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <GroupsOutlinedIcon id="group-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <PersonOutlineOutlinedIcon id="person-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <FunctionsOutlinedIcon id="community-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <input id="search-bar" type="text" placeholder="Search" style={{position: "absolute", top: "17px", width: "500px", fontSize: "24px"}}>
             </input>
-            <Typography display="inline" style={{position: "absolute", right: "100px", top: "22px"}} variant="h2" sx={{fontWeight: 600, fontSize: 25}}>SORT BY</Typography>
-            <SortIcon style={{position: "absolute", right: "10px", cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <Typography id="sort-by" display="inline" style={{position: "absolute", right: "100px", top: "22px"}} variant="h2" sx={{fontWeight: 600, fontSize: 25}}>SORT BY</Typography>
+            <SortIcon id="sort-button" style={{position: "absolute", right: "10px", cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
         </div>
     )
 }

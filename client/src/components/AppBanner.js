@@ -30,6 +30,9 @@ export default function AppBanner() {
         handleMenuClose();
         auth.logoutUser();
     }
+    const handleCloseCurrentList = () => {
+        store.closeCurrentList();
+    }
 
     const menuId = 'primary-search-account-menu';
     const loggedOutMenu = (
@@ -92,7 +95,8 @@ export default function AppBanner() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar style={{ background: '#e0e0e0' }} position="static">
                 <Toolbar>
-                    <Typography                        
+                    <Typography
+                        onClick={handleCloseCurrentList}                        
                         variant="h4"
                         noWrap
                         component="div"

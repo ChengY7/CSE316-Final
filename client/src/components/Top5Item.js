@@ -15,7 +15,6 @@ import { AuthContext } from '../auth';
 function Top5Item(props) {
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
-    const [editActive, setEditActive] = useState(true);
 
     let { index } = props;
 

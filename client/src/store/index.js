@@ -170,6 +170,11 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
         store.closeCurrentList();
     }
+    store.PublishList = function () {
+        store.currentList.published=true;
+        store.updateCurrentList();
+        store.closeCurrentList();
+    }
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
@@ -223,20 +228,48 @@ function GlobalStoreContextProvider(props) {
         button8.style.opacity="100%";
         button8.style.pointerEvents="auto";
     }
+    store.checkDuplicates = function (array) {
+        for (let i=1; i<array.length; i++) {
+            let temp = array[i];
+            let tempArray = array.slice();
+            tempArray=tempArray.map(name => name.toLowerCase())
+            tempArray.splice(i, 1);
+            if (tempArray.includes(temp.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
     store.updateTempListInfo = function (text, index) {
         let currentTempListInfo = store.tempListInfo;
-        console.log("old temp: "+currentTempListInfo)
         currentTempListInfo[index]=text;
-        console.log("new temp: "+currentTempListInfo)
         storeReducer({
             type: GlobalStoreActionType.UPDATE_TEMP_LIST_INFO,
             payload: currentTempListInfo
         })
+        let publishable = true;
+        if (store.checkDuplicates(store.tempListInfo)) {
+            publishable = false;
+        }
+        for (let j=0; j<6; j++) {
+            if(store.tempListInfo[j]==="" || !store.tempListInfo[j].charAt(0).match(/^[0-9a-z]+$/i)) {
+                publishable = false;
+                break;
+            }
+        }
+        if (publishable===false) {
+            let button = document.getElementById("publish-button");
+            button.style.opacity="20%";
+            button.style.pointerEvents="none";
+        }
+        else {
+            let button = document.getElementById("publish-button");
+            button.style.opacity="100%";
+            button.style.pointerEvents="auto";
+        }
     }
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        
-        console.log(auth.user)
         let newListName = "Untitled" + store.newListCounter;
         let payload = {
             name: newListName,
@@ -261,6 +294,9 @@ function GlobalStoreContextProvider(props) {
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             history.push("/top5list/" + newList._id);
+            let button = document.getElementById("publish-button");
+            button.style.opacity="20%";
+            button.style.pointerEvents="none";
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -366,6 +402,27 @@ function GlobalStoreContextProvider(props) {
                 let button8 = document.getElementById("top5-statusbar");
                 button8.style.opacity="20%";
                 button8.style.pointerEvents="none";
+
+                let publishable = true;
+                if (store.checkDuplicates(tempListInfo)) {
+                    publishable = false;
+                }
+                for (let j=0; j<6; j++) {
+                    if(tempListInfo[j]==="" || !tempListInfo[j].charAt(0).match(/^[0-9a-z]+$/i)) {
+                     publishable = false;
+                    break;
+                    }
+                 }
+                if (publishable===false) {
+                    let button = document.getElementById("publish-button");
+                    button.style.opacity="20%";
+                    button.style.pointerEvents="none";
+                }
+                else {
+                    let button = document.getElementById("publish-button");
+                    button.style.opacity="100%";
+                    button.style.pointerEvents="auto";
+                }
             }
         }
     }

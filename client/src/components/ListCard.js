@@ -61,7 +61,6 @@ function ListCard(props) {
     function handleUpdateText(event) {
         setText(event.target.value);
     }
-
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -109,25 +108,55 @@ function ListCard(props) {
                 </Box>
         </ListItem>
 
-    if (editActive) {
-        cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Top 5 List Name"
-                name="name"
-                autoComplete="Top 5 List Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
-                autoFocus
-            />
+    if (idNamePair.published) {
+        cardElement=
+        <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            sx={{ marginTop: '15px', display: 'flex', p: 5, backgroundColor: "#fffff1", border: "1.5px solid black", padding: "48px", borderRadius: "10px", paddingRight: "1180px", position: "auto", right: "50px"}}
+            style={{
+                fontSize: '16pt',
+                width: '100%',
+                fontWeight: "bold",
+            }}
+        >
+                <Box style={{position: "absolute", top: "0px", left: "5px"}} sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+                <Typography display="inline" style={{position: "absolute", left: "14px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>By:</Typography>
+                <Typography display="inline" style={{position: "absolute", left: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
+                <Typography onClick={(event) => {handleLoadList(event, idNamePair._id)}} display="inline" style={{cursor:'pointer', position: "absolute", left: "14px", bottom: "10px", color: "#ff3331", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Edit</Typography>
+                <Typography display="inline" style={{position: "absolute", right: "234px", bottom:"10px" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Views:</Typography>
+                <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
+                <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
+                    <IconButton onClick={handleToggleEdit} aria-label='like'>
+                        <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+                <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='dislike'>
+                        <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "0px", top: "0"}} >
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        <DeleteOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='expand'>
+                        <ExpandMoreIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+        </ListItem>
     }
+
     return (
         cardElement
     );

@@ -20,8 +20,11 @@ function WorkspaceScreen() {
     //     store.refresh(id);
     // }
     let editItems = "";
-    function handleSaveList(event) {
+    function handleSaveList() {
         store.UpdateList();
+    }
+    function handlePublishList() {
+        store.PublishList();
     }
     function handleTempListInfo(event) {
         store.updateTempListInfo(event.target.value, 0)
@@ -46,10 +49,10 @@ function WorkspaceScreen() {
             <Toolbar />
             <div id="workspace-edit">
                 <input onChange={(event) => {handleTempListInfo(event)}} type="text" defaultValue={listName} style={{width:"480px", position:"absolute", top:"5px", height:"20px", left: "24px", fontSize:"20px", fontWeight: "bold"}}></input>
-                <button onClick={(event) => {handleSaveList(event)}} style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
+                <button onClick={handleSaveList} style={{position:"absolute", bottom:"12px", right:"190px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
                     Save
                 </button>
-                <button style={{position:"absolute", bottom:"12px", right:"24px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
+                <button onClick={handlePublishList} id="publish-button" style={{position:"absolute", bottom:"12px", right:"24px", padding: "4px", width:"150px", fontSize:"30px", fontWeight: "bold"}}>
                     Publish
                 </button>
                 <div id="dark-purple">

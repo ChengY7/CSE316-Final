@@ -12,6 +12,7 @@ import LoginScreen from './LoginScreen'
 import BasicModal from './BasicModal'
 import Toolbar from './Toolbar'
 import CommentCard from './CommentCard'
+import AllListScreen from './AllListScreen'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -32,5 +33,6 @@ export {
     WorkspaceScreen,
     BasicModal,
     Toolbar,
-    CommentCard
+    CommentCard,
+    AllListScreen
  }

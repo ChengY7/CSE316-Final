@@ -168,7 +168,7 @@ function GlobalStoreContextProvider(props) {
         async function updateItems() {
             for (let i=0; i<5; i++) {
                 if(store.currentList.items[i]!==store.tempListInfo[i+1]) {
-                    store.updateItem(i, store.tempListInfo[i+1]);
+                    await store.updateItem(i, store.tempListInfo[i+1]);
                 }
             }
             store.updateCurrentList();
@@ -182,11 +182,11 @@ function GlobalStoreContextProvider(props) {
         } updateItems();
         console.log(store.idNamePairs)
     }
-    store.PublishList = function () {
+    store.PublishList = async function () {
         store.currentList.published=true;
         store.currentList.publishedDate = new Date();
         store.updateCurrentList();
-        store.UpdateList();
+        await store.UpdateList();
         console.log(store.currentList.published)
     }
     store.changeListName = async function (id, newName) {
@@ -254,7 +254,7 @@ function GlobalStoreContextProvider(props) {
         }
         return false;
     }
-    store.updateTempListInfo = function (text, index) {
+    store.updateTempListInfo = async function (text, index) {
         let currentTempListInfo = store.tempListInfo;
         currentTempListInfo[index]=text;
         storeReducer({

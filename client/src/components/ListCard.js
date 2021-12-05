@@ -63,7 +63,8 @@ function ListCard(props) {
     }
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            store.addComment(event.target.id, event.target.value).then(() => {
+            let comment = auth.user.userName + " " + event.target.value
+            store.addComment(event.target.id, comment).then(() => {
                 toggleRefresh();
             });
             event.currentTarget.value="";
@@ -146,7 +147,7 @@ function ListCard(props) {
                     commentElement
                 }
                 </div>
-                <input id={idNamePair._id} onKeyPress={handleKeyPress} type="text" placeholder="Add Comment" style={{position: "absolute", left:"31px", top: "232.5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none", padding:"10px"}}>
+                <input id={idNamePair._id} maxLength="250" onKeyPress={handleKeyPress} type="text" placeholder="Add Comment (max length 250)" style={{position: "absolute", left:"31px", top: "232.5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none", padding:"10px"}}>
                 </input>
             </Box>
             <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>

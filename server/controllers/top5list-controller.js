@@ -58,6 +58,7 @@ updateTop5List = async (req, res) => {
         top5List.view = body.views
         top5List.published = body.published
         top5List.publishedDate = body.publishedDate
+        top5List.comments = body.comments
         top5List
             .save()
             .then(() => {
@@ -140,7 +141,8 @@ getTop5ListPairs = async (req, res) => {
                     dislikes: list.dislikes,
                     date: list.date,
                     published: list.published,
-                    publishedDate: list.publishedDate
+                    publishedDate: list.publishedDate,
+                    comments: list.comments
                 };
                 //console.log(pair.ownerEmail + " " + req.body);
                 //if (pair.ownerEmail===req.ownerEmail) {

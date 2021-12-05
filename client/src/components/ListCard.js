@@ -48,6 +48,12 @@ function ListCard(props) {
         }
         setExpandListActive(newExpandActive);
     }
+    function handleKeyPress(event) {
+        if (event.code === "Enter") {
+            store.addComment(event.target.id, event.target.value)
+            event.currentTarget.value="";
+        }
+    }
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
@@ -109,7 +115,7 @@ function ListCard(props) {
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[4]}</Typography>
             </Box>
             <Box style={{position: "absolute", top: "60px", left: "600px"}} sx={{backgroundColor:"#c4c4c4", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
-                <input id="comment-bar" type="text" placeholder="Add Comment" style={{position: "absolute", left:"5px", bottom: "5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none"}}>
+                <input id={idNamePair._id} onKeyPress={handleKeyPress} type="text" placeholder="Add Comment" style={{position: "absolute", left:"5px", bottom: "5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none"}}>
                 </input>
             </Box>
             <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>

@@ -185,9 +185,38 @@ function GlobalStoreContextProvider(props) {
     store.PublishList = async function () {
         store.currentList.published=true;
         store.currentList.publishedDate = new Date();
+        store.currentList.comments = [];
         store.updateCurrentList();
         await store.UpdateList();
         console.log(store.currentList.published)
+    }
+    store.addComment = async function (id, comment) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            top5List.comments.push(comment);
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.sucess) {
+                    async function getListPairs(top5List) {
+                        const response = await api.getTop5ListPairs();
+                        if (response.data.sucess) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+        
     }
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
@@ -303,7 +332,8 @@ function GlobalStoreContextProvider(props) {
             views: "0",
             date: new Date(),
             published: false,
-            publishedDate: null
+            publishedDate: null,
+            comments: null,
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {

@@ -107,7 +107,7 @@ function ListCard(props) {
         commentElement=
             <List sx={{ width: '90%', left: '5%'}}>
             {
-                idNamePair.comments.map((comment) => (
+                idNamePair.comments.slice(0).reverse().map((comment) => (
                     <CommentCard 
                         comment={comment}
                     />

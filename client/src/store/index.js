@@ -22,7 +22,8 @@ export const GlobalStoreActionType = {
     MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
     UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
-    UPDATE_TEMP_LIST_INFO: "UPDATE_TEMP_LIST_INFO"
+    UPDATE_TEMP_LIST_INFO: "UPDATE_TEMP_LIST_INFO",
+    SET_EXPAND_LIST_ACTIVE: "SET_EXPAND_LIST_ACTIVE"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -38,6 +39,7 @@ function GlobalStoreContextProvider(props) {
         listNameActive: false,
         listMarkedForDeletion: null,
         tempListInfo: [],
+        isExpandListActive: false
     });
     const history = useHistory();
 
@@ -56,7 +58,8 @@ function GlobalStoreContextProvider(props) {
                     currentList: null,
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
-                    tempListInfo: store.tempListInfo
+                    tempListInfo: store.tempListInfo,
+                    isExpandListActive: false
                 });
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
@@ -65,7 +68,8 @@ function GlobalStoreContextProvider(props) {
                     currentList: store.currentList,
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
-                    tempListInfo: payload
+                    tempListInfo: payload,
+                    isExpandListActive: false
                 })
             }
             // STOP EDITING THE CURRENT LIST
@@ -76,6 +80,7 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo:[],
+                    isExpandListActive: false
                 })
             }
             // CREATE A NEW LIST
@@ -86,6 +91,7 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter + 1,
                     listMarkedForDeletion: null,
                     tempListInfo: payload.tempListInfo,
+                    isExpandListActive: false
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -96,6 +102,7 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: [],
+                    isExpandListActive: false
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -106,6 +113,7 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: payload,
                     tempListInfo: [],
+                    isExpandListActive: false
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -116,6 +124,7 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: [],
+                    isExpandListActive: false
                 });
             }
             // UPDATE A LIST
@@ -126,6 +135,17 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: payload.tempListInfo,
+                    isExpandListActive: false
+                });
+            }
+            case GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: payload,
+                    newListCounter: store.newListCounter,
+                    listMarkedForDeletion: null,
+                    tempListInfo: [],
+                    isExpandListActive: true
                 });
             }
             default:
@@ -138,18 +158,28 @@ function GlobalStoreContextProvider(props) {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
-    store.UpdateList = function () {
-        for (let i=0; i<5; i++) {
-            if(store.currentList.items[i]!==store.tempListInfo[i+1]) {
-                store.updateItem(i, store.tempListInfo[i+1]);
+    store.setIsExpandListActive = function () {
+        storeReducer({
+            type: GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE,
+            payload: null
+        });
+    }
+    store.UpdateList = async function () {
+        async function updateItems() {
+            for (let i=0; i<5; i++) {
+                if(store.currentList.items[i]!==store.tempListInfo[i+1]) {
+                    store.updateItem(i, store.tempListInfo[i+1]);
+                }
             }
-        }
-        store.updateCurrentList();
-        if(store.currentList.name!==store.tempListInfo[0]) {
-            store.currentList.name=store.tempListInfo[0];
-        }
-        store.updateCurrentList();
-        store.closeCurrentList();
+            store.updateCurrentList();
+            async function updateListName() {
+                if(store.currentList.name!==store.tempListInfo[0]) {
+                    store.currentList.name=store.tempListInfo[0];
+                }
+                store.updateCurrentList();
+                store.closeCurrentList();
+            } updateListName();
+        } updateItems();
         console.log(store.idNamePairs)
     }
     store.PublishList = function () {
@@ -198,7 +228,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
-    store.closeCurrentList = function () {
+    store.closeCurrentList = async function () {
         storeReducer({
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}

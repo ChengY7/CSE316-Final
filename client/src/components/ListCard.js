@@ -21,8 +21,7 @@ import {Typography } from '@mui/material'
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
      const { auth } = useContext(AuthContext);
-    const [editActive, setEditActive] = useState(false);
-    const [text, setText] = useState("");
+     const [expandListActive, setExpandListActive] = useState(false);
     const { idNamePair } = props;
     let dateArray;
     if (idNamePair.publishedDate!==null) {
@@ -41,35 +40,17 @@ function ListCard(props) {
             store.setCurrentList(id);
         }
     }
-    
-
-    function handleToggleEdit(event) {
-        event.stopPropagation();
-        toggleEdit();
-    }
-
-    function toggleEdit() {
-        let newActive = !editActive;
-        if (newActive) {
-            store.setIsListNameEditActive();
+    function toggleExpand() {
+        let newExpandActive = !expandListActive;
+        if (newExpandActive) {
+            store.setIsExpandListActive();
         }
-        setEditActive(newActive);
+        setExpandListActive(newExpandActive);
     }
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
-    }
-
-    function handleKeyPress(event) {
-        if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
-            toggleEdit();
-        }
-    }
-    function handleUpdateText(event) {
-        setText(event.target.value);
     }
     let cardElement =
         <ListItem
@@ -90,7 +71,7 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
-                    <IconButton onClick={handleToggleEdit} aria-label='like'>
+                    <IconButton aria-label='like'>
                         <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>

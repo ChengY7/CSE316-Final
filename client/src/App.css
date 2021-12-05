@@ -213,6 +213,16 @@ body {
   flex-direction: column;
   overflow: scroll;
 }
+#comment-list {
+  position: absolute;
+  left: 0px;
+  top: 0%;
+  width: 113%;
+  height: 88%;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
 
 .list-card,
 .selected-list-card,

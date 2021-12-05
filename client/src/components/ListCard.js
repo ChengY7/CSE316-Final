@@ -12,6 +12,8 @@ import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Typography } from '@mui/material'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import List from '@mui/material/List';
+import CommentCard from './CommentCard'
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -59,6 +61,7 @@ function ListCard(props) {
         event.stopPropagation();
         store.markListForDeletion(id);
     }
+    let commentElement;
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -88,6 +91,17 @@ function ListCard(props) {
                 </Box>
         </ListItem>
     if (expandListActive && idNamePair.publishedDate) {
+        commentElement=
+            <List sx={{ width: '90%', left: '5%'}}>
+            {
+                idNamePair.comments.map((comment) => (
+                    <CommentCard 
+                        comment={comment}
+                    />
+                ))
+            }
+            </List>;
+
         cardElement=
         <ListItem
         id={idNamePair._id}
@@ -114,8 +128,13 @@ function ListCard(props) {
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>5.</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[4]}</Typography>
             </Box>
-            <Box style={{position: "absolute", top: "60px", left: "600px"}} sx={{backgroundColor:"#c4c4c4", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
-                <input id={idNamePair._id} onKeyPress={handleKeyPress} type="text" placeholder="Add Comment" style={{position: "absolute", left:"5px", bottom: "5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none"}}>
+            <Box style={{position: "absolute", top: "48px", left: "565px"}} sx={{ padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
+                <div id="comment-list">
+                {
+                    commentElement
+                }
+                </div>
+                <input id={idNamePair._id} onKeyPress={handleKeyPress} type="text" placeholder="Add Comment" style={{position: "absolute", left:"31px", top: "232.5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none", padding:"10px"}}>
                 </input>
             </Box>
             <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>

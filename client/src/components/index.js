@@ -11,6 +11,7 @@ import WorkspaceScreen from './WorkspaceScreen'
 import LoginScreen from './LoginScreen'
 import BasicModal from './BasicModal'
 import Toolbar from './Toolbar'
+import CommentCard from './CommentCard'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -30,4 +31,6 @@ export {
     Top5Item, 
     WorkspaceScreen,
     BasicModal,
-    Toolbar }
+    Toolbar,
+    CommentCard
+ }

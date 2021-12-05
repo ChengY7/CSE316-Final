@@ -96,7 +96,7 @@ function ListCard(props) {
             <Box style={{position: "absolute", top: "0px", left: "5px"}} sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             <Typography display="inline" style={{position: "absolute", left: "14px", top: "40px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>By:</Typography>
             <Typography display="inline" style={{position: "absolute", left: "40px", top: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
-            <Box style={{position: "absolute", top: "60px", left: "5px"}} sx={{backgroundColor:"#2c2f70", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
+            <Box style={{position: "absolute", top: "60px", left: "10px"}} sx={{backgroundColor:"#2c2f70", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>1.</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[0]}</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>2.</Typography>
@@ -144,6 +144,49 @@ function ListCard(props) {
             </Box>
     </ListItem>
         
+    }
+    else if (expandListActive && !idNamePair.published) {
+        cardElement=
+        <ListItem
+        id={idNamePair._id}
+        key={idNamePair._id}
+        sx={{ marginTop: '15px', display: 'flex', p: 5, backgroundColor: "#fffff1", border: "1.5px solid black", padding: "175px", borderRadius: "10px", paddingRight: "1052px", position: "auto", right: "50px"}}
+        style={{
+            fontSize: '16pt',
+            width: '100%',
+            fontWeight: "bold",
+        }}
+    >
+            <Box style={{position: "absolute", top: "0px", left: "5px"}} sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+            <Typography display="inline" style={{position: "absolute", left: "14px", top: "40px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>By:</Typography>
+            <Typography display="inline" style={{position: "absolute", left: "40px", top: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
+            <Typography onClick={(event) => {handleLoadList(event, idNamePair._id)}} display="inline" style={{cursor:'pointer', position: "absolute", left: "14px", bottom: "10px", color: "#ff3331", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Edit</Typography>
+            <Box style={{position: "absolute", top: "60px", left: "10px"}} sx={{backgroundColor:"#2c2f70", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>1.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[0]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>2.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[1]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>3.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[2]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>4.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[3]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>5.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[4]}</Typography>
+            </Box>
+            <Box sx={{ p: 1 }} style={{position: "absolute", right: "0px", top: "0"}} >
+                <IconButton onClick={(event) => {
+                    handleDeleteList(event, idNamePair._id)
+                }} aria-label='delete'>
+                    <DeleteOutlinedIcon style={{fontSize:'28pt'}} />
+                </IconButton>
+            </Box>
+            <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
+                <IconButton onClick={toggleExpand} aria-label='expand'>
+                    <ExpandLessIcon style={{fontSize:'28pt'}} />
+                </IconButton>
+            </Box>
+    </ListItem>
+
     }
     else if (idNamePair.published) {
         cardElement=

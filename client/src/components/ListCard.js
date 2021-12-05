@@ -24,13 +24,16 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair } = props;
-    const dateArray = idNamePair.publishedDate.split("-");
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    let date = dateArray[2].substring(0,2)
-    date = date.replace("0", " ")
-    let month = parseInt(dateArray[1])
-    dateArray[2]=date;
-    dateArray[1]=months[month-1]
+    let dateArray;
+    if (idNamePair.publishedDate!==null) {
+        dateArray = idNamePair.publishedDate.split("-");
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let date = dateArray[2].substring(0,2)
+        date = date.replace("0", " ")
+        let month = parseInt(dateArray[1])
+        dateArray[2]=date;
+        dateArray[1]=months[month-1]
+    }
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -38,6 +41,7 @@ function ListCard(props) {
             store.setCurrentList(id);
         }
     }
+    
 
     function handleToggleEdit(event) {
         event.stopPropagation();
@@ -131,22 +135,6 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", left: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
                 <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>
                 <Typography display="inline" style={{position: "absolute", left: "80px", bottom: "10px", color: "#69b15e"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{dateArray[1]+" "+dateArray[2]+", "+dateArray[0]}</Typography>
-                <Typography display="inline" style={{position: "absolute", right: "234px", bottom:"10px" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Views:</Typography>
-                <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
-                <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
-                <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
-                    <IconButton onClick={handleToggleEdit} aria-label='like'>
-                        <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
-                    </IconButton>
-                </Box>
-                <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
-                <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='dislike'>
-                        <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
-                    </IconButton>
-                </Box>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "0px", top: "0"}} >
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)

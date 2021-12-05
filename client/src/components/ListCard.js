@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import { AuthContext } from '../auth';
 import TextField from '@mui/material/TextField';
@@ -25,6 +25,11 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
      const { auth } = useContext(AuthContext);
      const [expandListActive, setExpandListActive] = useState(false);
+     const [refresh, setRefresh] = useState(false);
+     useEffect(() => {
+         console.log("helooooo")
+        store.loadIdNamePairs();
+    }, [expandListActive, refresh]);
     const { idNamePair } = props;
     let dateArray;
     if (idNamePair.publishedDate!==null) {
@@ -50,13 +55,20 @@ function ListCard(props) {
         }
         setExpandListActive(newExpandActive);
     }
+    function toggleRefresh() {
+        let newRefresh = !refresh;
+        if (newRefresh) {
+        }
+        setRefresh(newRefresh);
+    }
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            store.addComment(event.target.id, event.target.value)
+            store.addComment(event.target.id, event.target.value).then(() => {
+                toggleRefresh();
+            });
             event.currentTarget.value="";
         }
     }
-
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);

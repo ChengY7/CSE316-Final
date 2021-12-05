@@ -55,11 +55,11 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
                     idNamePairs: payload.idNamePairs,
-                    currentList: null,
+                    currentList: payload.top5List,
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: store.tempListInfo,
-                    isExpandListActive: false
+                    isExpandListActive: store.isExpandListActive
                 });
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
@@ -165,22 +165,17 @@ function GlobalStoreContextProvider(props) {
         });
     }
     store.UpdateList = async function () {
-        async function updateItems() {
+        console.log(store.tempListInfo)
             for (let i=0; i<5; i++) {
                 if(store.currentList.items[i]!==store.tempListInfo[i+1]) {
-                    await store.updateItem(i, store.tempListInfo[i+1]);
+                    store.updateItem(i, store.tempListInfo[i+1]);
                 }
             }
-            store.updateCurrentList();
-            async function updateListName() {
                 if(store.currentList.name!==store.tempListInfo[0]) {
                     store.currentList.name=store.tempListInfo[0];
                 }
                 store.updateCurrentList();
                 store.closeCurrentList();
-            } updateListName();
-        } updateItems();
-        console.log(store.idNamePairs)
     }
     store.PublishList = async function () {
         store.currentList.published=true;
@@ -216,8 +211,10 @@ function GlobalStoreContextProvider(props) {
             }
             updateList(top5List);
         }
+       
         
     }
+    
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {

@@ -4,7 +4,7 @@ import ListCard from './ListCard.js'
 import List from '@mui/material/List';
 import Toolbar from './Toolbar'
 
-const AllListScreen = () => {
+const UserScreen = () => {
     const { store } = useContext(GlobalStoreContext)
 
     useEffect(() => {
@@ -14,9 +14,9 @@ const AllListScreen = () => {
     return (
         <div>
             <Toolbar />
-            <div>All</div>
+            <div>User</div>
         </div>
     )
 
 }
-export default AllListScreen;
+export default UserScreen;

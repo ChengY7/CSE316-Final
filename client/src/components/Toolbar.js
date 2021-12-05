@@ -13,13 +13,25 @@ import { Typography } from '@mui/material'
 
 function Toolbar() {
     const { store } = useContext(GlobalStoreContext);
+    function handleHome() {
+        store.changeMode("home")
+    }
+    function handleGroup(event) {
+        store.changeMode("all")
+    }
+    function handleUser(event) {
+        store.changeMode("user")
+    }
+    function handleCommunity(event) {
+        store.changeMode("community")
+    }
 
     return (
         <div id="toolbar">
-            <HomeOutlinedIcon id="home-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <GroupsOutlinedIcon id="group-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <PersonOutlineOutlinedIcon id="person-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <FunctionsOutlinedIcon id="community-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <HomeOutlinedIcon onClick={handleHome} id="home-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <GroupsOutlinedIcon onClick={handleGroup} id="group-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <PersonOutlineOutlinedIcon onClick={handleUser} id="person-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
+            <FunctionsOutlinedIcon onClick={handleCommunity} id="community-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
             <input id="search-bar" type="text" placeholder="Search" style={{position: "absolute", top: "17px", width: "500px", fontSize: "24px"}}>
             </input>
             <Typography id="sort-by" display="inline" style={{position: "absolute", right: "100px", top: "22px"}} variant="h2" sx={{fontWeight: 600, fontSize: 25}}>SORT BY</Typography>

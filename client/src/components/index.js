@@ -13,6 +13,8 @@ import BasicModal from './BasicModal'
 import Toolbar from './Toolbar'
 import CommentCard from './CommentCard'
 import AllListScreen from './AllListScreen'
+import UserScreen from './UserScreen'
+import CommunityScreen from './CommunityScreen'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -34,5 +36,7 @@ export {
     BasicModal,
     Toolbar,
     CommentCard,
-    AllListScreen
+    AllListScreen,
+    UserScreen,
+    CommunityScreen
  }

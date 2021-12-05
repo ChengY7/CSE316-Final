@@ -23,7 +23,8 @@ export const GlobalStoreActionType = {
     UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     UPDATE_TEMP_LIST_INFO: "UPDATE_TEMP_LIST_INFO",
-    SET_EXPAND_LIST_ACTIVE: "SET_EXPAND_LIST_ACTIVE"
+    SET_EXPAND_LIST_ACTIVE: "SET_EXPAND_LIST_ACTIVE",
+    CHANGE_MODE: "CHANGE_MODE"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -39,7 +40,8 @@ function GlobalStoreContextProvider(props) {
         listNameActive: false,
         listMarkedForDeletion: null,
         tempListInfo: [],
-        isExpandListActive: false
+        isExpandListActive: false,
+        mode: "home"
     });
     const history = useHistory();
 
@@ -59,7 +61,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: store.tempListInfo,
-                    isExpandListActive: store.isExpandListActive
+                    isExpandListActive: store.isExpandListActive,
+                    mode: store.mode
                 });
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
@@ -69,7 +72,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: payload,
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 })
             }
             // STOP EDITING THE CURRENT LIST
@@ -80,7 +84,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo:[],
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 })
             }
             // CREATE A NEW LIST
@@ -91,7 +96,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter + 1,
                     listMarkedForDeletion: null,
                     tempListInfo: payload.tempListInfo,
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -102,7 +108,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: [],
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -113,7 +120,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: payload,
                     tempListInfo: [],
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -124,7 +132,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: [],
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 });
             }
             // UPDATE A LIST
@@ -135,7 +144,8 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: payload.tempListInfo,
-                    isExpandListActive: false
+                    isExpandListActive: false,
+                    mode: store.mode
                 });
             }
             case GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE: {
@@ -145,8 +155,20 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listMarkedForDeletion: null,
                     tempListInfo: [],
-                    isExpandListActive: true
+                    isExpandListActive: true,
+                    mode: store.mode
                 });
+            }
+            case GlobalStoreActionType.CHANGE_MODE: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    listMarkedForDeletion: store.listMarkedForDeletion,
+                    tempListInfo: store.tempListInfo,
+                    isExpandListActive: store.isExpandListActive,
+                    mode: payload
+                })
             }
             default:
                 return store;
@@ -158,6 +180,12 @@ function GlobalStoreContextProvider(props) {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
+    store.changeMode = function (mode) {
+        storeReducer({
+            type: GlobalStoreActionType.CHANGE_MODE,
+            payload: mode
+        });
+    }
     store.setIsExpandListActive = function () {
         storeReducer({
             type: GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE,

@@ -27,7 +27,6 @@ function ListCard(props) {
      const [expandListActive, setExpandListActive] = useState(false);
      const [refresh, setRefresh] = useState(false);
      useEffect(() => {
-         console.log("helooooo")
         store.loadIdNamePairs();
     }, [expandListActive, refresh]);
     const { idNamePair } = props;

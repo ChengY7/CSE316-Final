@@ -380,20 +380,31 @@ function GlobalStoreContextProvider(props) {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
+    
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
+        console.log("buggggg")
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             document.getElementById("top5-statusbar").style.visibility = "visible";
             let pairsArray = response.data.idNamePairs;
             let newPairsArray=[];
-            for (let i = 0; i<pairsArray.length; i++) {
-                if (pairsArray[i].ownerEmail===auth.user.email) {
-                    newPairsArray.push(pairsArray[i]);
+            if (store.mode==="home") {
+                for (let i = 0; i<pairsArray.length; i++) {
+                    if (pairsArray[i].ownerEmail===auth.user.email) {
+                        newPairsArray.push(pairsArray[i]);
+                    }
                 }
             }
-            storeReducer({
+            else if (store.mode==="all") {
+                for (let i = 0; i<pairsArray.length; i++) {
+                    if (pairsArray[i].published) {
+                        newPairsArray.push(pairsArray[i]);
+                    }
+                }
+            }
+            storeReducer({ 
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: newPairsArray
             });

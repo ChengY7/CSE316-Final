@@ -178,12 +178,12 @@ function GlobalStoreContextProvider(props) {
                 store.closeCurrentList();
     }
     store.PublishList = async function () {
-        store.currentList.published=true;
-        store.currentList.publishedDate = new Date();
-        store.currentList.comments = [];
-        store.updateCurrentList();
-        await store.UpdateList();
-        console.log(store.currentList.published)
+        store.UpdateList().then(() => {
+            store.currentList.published=true;
+            store.currentList.publishedDate = new Date();
+            store.currentList.comments = [];
+            store.updateCurrentList();
+        })
     }
     store.addComment = async function (id, comment) {
         let response = await api.getTop5ListById(id);

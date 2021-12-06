@@ -12,8 +12,6 @@ function CommentCard(props) {
     let userName = comment.substring(0, firstIndex)
     firstIndex++;
     let userComment = comment.substring(firstIndex)
-    console.log(userName)
-    console.log(userComment)
     let commentCard=
     <ListItem
         sx={{marginTop:"5px", backgroundColor:"#d3b036", display:"flex", border: "1.5px solid black", padding: "33px", borderRadius: "10px"}}

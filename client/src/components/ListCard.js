@@ -47,6 +47,12 @@ function ListCard(props) {
             store.setCurrentList(id);
         }
     }
+    function expandList() {
+        store.addViews(idNamePair._id).then(() => {
+            toggleRefresh();
+            toggleExpand();
+        });
+    }
     function toggleExpand() {
         let newExpandActive = !expandListActive;
         if (newExpandActive) {
@@ -107,7 +113,7 @@ function ListCard(props) {
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
-                    <IconButton  onClick={toggleExpand} aria-label='expand'>
+                    <IconButton  onClick={expandList} aria-label='expand'>
                         <ExpandMoreIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
@@ -214,7 +220,7 @@ function ListCard(props) {
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
-                    <IconButton onClick={toggleExpand} aria-label='expand'>
+                    <IconButton onClick={expandList} aria-label='expand'>
                         <ExpandMoreIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
@@ -380,7 +386,7 @@ function ListCard(props) {
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
-                    <IconButton onClick={toggleExpand} aria-label='expand'>
+                    <IconButton onClick={expandList} aria-label='expand'>
                         <ExpandMoreIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>

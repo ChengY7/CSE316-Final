@@ -213,6 +213,39 @@ function GlobalStoreContextProvider(props) {
             store.updateCurrentList();
         })
     }
+    store.addViews = async function (id) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            console.log(top5List.views)
+            let views = top5List.views
+            let intViews = parseInt(views)
+            intViews=intViews+1;
+            views=""+intViews
+            top5List.views=views;
+            console.log(top5List.views)
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.sucess) {
+                    async function getListPairs(top5List) {
+                        const response = await api.getTop5ListPairs();
+                        if (response.data.sucess) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
     store.like = async function (id, username) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
@@ -231,6 +264,7 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             likes.push(username);
+            top5List.likes=likes
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
                 if (response.data.sucess) {
@@ -271,6 +305,7 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             dislikes.push(username);
+            top5List.dislikes = dislikes;
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
                 if (response.data.sucess) {

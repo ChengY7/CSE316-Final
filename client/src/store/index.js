@@ -317,6 +317,17 @@ function GlobalStoreContextProvider(props) {
             });
         }
     }
+    store.addCommunityListViews = async function (name) {
+        for (let i = 0; i<store.communityList.length; i++) {
+            if (store.communityList[i].name===name) {
+                let view = parseInt(store.communityList[i].views)
+                view++;
+                let string = ""+view
+                store.communityList[i].view=string
+                console.log(store.communityList[i].view)
+            }
+        }
+    }
     store.addViews = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {

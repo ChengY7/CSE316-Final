@@ -213,6 +213,86 @@ function GlobalStoreContextProvider(props) {
             store.updateCurrentList();
         })
     }
+    store.like = async function (id, username) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            let likes = top5List.likes;
+            let dislikes = top5List.dislikes;
+            for (let i=0; i<dislikes.length; i++) {
+                if(dislikes[i]===username) {
+                    dislikes.splice(i, 1);
+                    break;
+                }
+            }
+            for (let i=0; i<likes.length; i++) {
+                if(likes[i]===username) {
+                    return;
+                }
+            }
+            likes.push(username);
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.sucess) {
+                    async function getListPairs(top5List) {
+                        const response = await api.getTop5ListPairs();
+                        if (response.data.sucess) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
+    store.dislike = async function (id, username) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            let likes = top5List.likes;
+            let dislikes = top5List.dislikes;
+            for (let i=0; i<likes.length; i++) {
+                if(likes[i]===username) {
+                    likes.splice(i, 1);
+                    break;
+                }
+            }
+            for (let i=0; i<dislikes.length; i++) {
+                if(dislikes[i]===username) {
+                    return;
+                }
+            }
+            dislikes.push(username);
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.sucess) {
+                    async function getListPairs(top5List) {
+                        const response = await api.getTop5ListPairs();
+                        if (response.data.sucess) {
+                            let pairsArray = response.data.idNamePairs;
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: pairsArray,
+                                    top5List: top5List
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
     store.addComment = async function (id, comment) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
@@ -421,20 +501,13 @@ function GlobalStoreContextProvider(props) {
             });
         }
     }
-    store.load = async function () {
-        console.log("dasdasds"+store.idNamePairs)
-        storeReducer({ 
-            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-            payload: store.idNamePairs
-        });
-    }
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
-        let button = document.getElementById("search-bar")
-        console.log(button.value)
-        if (button.value!=="") {
-            store.load()
-        }
+        //let button = document.getElementById("search-bar")
+        //console.log(button.value)
+        //if (button.value!=="") {
+            //return
+        //}
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             document.getElementById("top5-statusbar").style.visibility = "visible";

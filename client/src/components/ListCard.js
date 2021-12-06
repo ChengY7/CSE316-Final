@@ -67,13 +67,21 @@ function ListCard(props) {
                 toggleRefresh();
             });
             event.currentTarget.value="";
-            store.changeMode(store.mode);
-            
         }
     }
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
+    }
+    function handleLike(event) {
+        store.like(idNamePair._id, auth.user.userName).then(() => {
+            toggleRefresh();
+        });
+    }
+    function handleDislike(event) {
+        store.dislike(idNamePair._id, auth.user.userName).then(() => {
+            toggleRefresh();
+        });
     }
     let commentElement;
     let cardElement =
@@ -157,15 +165,13 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
             <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
-                    <IconButton aria-label='like'>
+                    <IconButton onClick={(event) => {handleLike(event)}} aria-label='like'>
                         <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='dislike'>
+                    <IconButton onClick={(event) => {handleDislike(event)}} aria-label='dislike'>
                         <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
@@ -197,15 +203,13 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
-                    <IconButton aria-label='like'>
+                    <IconButton onClick={(event) => {handleLike(event)}} aria-label='like'>
                         <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='dislike'>
+                    <IconButton onClick={(event) => {handleDislike(event)}} aria-label='dislike'>
                         <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
@@ -269,15 +273,13 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
             <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
-                    <IconButton aria-label='like'>
+                    <IconButton onClick={(event) => {handleLike(event)}} aria-label='like'>
                         <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='dislike'>
+                    <IconButton onClick={(event) => {handleDislike(event)}} aria-label='dislike'>
                         <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
@@ -360,15 +362,13 @@ function ListCard(props) {
                 <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
-                    <IconButton aria-label='like'>
+                    <IconButton onClick={(event) => {handleLike(event)}} aria-label='like'>
                         <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
                 <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
                 <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='dislike'>
+                    <IconButton onClick={(event) => {handleDislike(event)}} aria-label='dislike'>
                         <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>

@@ -25,7 +25,6 @@ export const GlobalStoreActionType = {
     UPDATE_TEMP_LIST_INFO: "UPDATE_TEMP_LIST_INFO",
     SET_EXPAND_LIST_ACTIVE: "SET_EXPAND_LIST_ACTIVE",
     CHANGE_MODE: "CHANGE_MODE",
-    UPDATE_TEMP_IDNAMEPAIRS: "UPDATE_TEMP_IDNAMEPAIRS"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -43,7 +42,6 @@ function GlobalStoreContextProvider(props) {
         tempListInfo: [],
         isExpandListActive: false,
         mode: "home",
-        tempidNamePairs: null
     });
     const history = useHistory();
 
@@ -65,20 +63,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: store.tempListInfo,
                     isExpandListActive: store.isExpandListActive,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 });
-            }
-            case GlobalStoreActionType.UPDATE_TEMP_IDNAMEPAIRS: {
-                return setStore({
-                    idNamePairs: store.idNamePairs,
-                    currentList: store.currentList,
-                    newListCounter: store.newListCounter,
-                    listMarkedForDeletion: store.listMarkedForDeletion,
-                    tempListInfo: store.tempListInfo,
-                    isExpandListActive: store.isExpandListActive,
-                    mode: store.mode,
-                    tempidNamePairs: payload
-                })
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
                 return setStore({
@@ -89,7 +74,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: payload,
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 })
             }
             // STOP EDITING THE CURRENT LIST
@@ -102,7 +86,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo:[],
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 })
             }
             // CREATE A NEW LIST
@@ -115,7 +98,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: payload.tempListInfo,
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -128,7 +110,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -141,7 +122,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -154,7 +134,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             // UPDATE A LIST
@@ -167,7 +146,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: payload.tempListInfo,
                     isExpandListActive: false,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             case GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE: {
@@ -179,7 +157,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: true,
                     mode: store.mode,
-                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             case GlobalStoreActionType.CHANGE_MODE: {
@@ -191,7 +168,6 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: store.tempListInfo,
                     isExpandListActive: store.isExpandListActive,
                     mode: payload,
-                    tempidNamePairs: null
                 })
             }
             default:
@@ -228,9 +204,6 @@ function GlobalStoreContextProvider(props) {
                 }
                 store.updateCurrentList();
                 store.closeCurrentList();
-                store.changeMode(store.mode)
-                let button2=document.getElementById("search-bar");
-                button2.value=""
     }
     store.PublishList = async function () {
         store.UpdateList().then(() => {
@@ -443,15 +416,25 @@ function GlobalStoreContextProvider(props) {
             }
             console.log(filteredPairsArray)
             storeReducer({ 
-                type: GlobalStoreActionType.UPDATE_TEMP_IDNAMEPAIRS,
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: filteredPairsArray
             });
         }
     }
-    
-
+    store.load = async function () {
+        console.log("dasdasds"+store.idNamePairs)
+        storeReducer({ 
+            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload: store.idNamePairs
+        });
+    }
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
+        let button = document.getElementById("search-bar")
+        console.log(button.value)
+        if (button.value!=="") {
+            store.load()
+        }
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             document.getElementById("top5-statusbar").style.visibility = "visible";
@@ -505,9 +488,6 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             store.loadIdNamePairs();
             history.push("/");
-            store.changeMode(store.mode)
-            let button=document.getElementById("search-bar");
-            button.value=""
         }
     }
 

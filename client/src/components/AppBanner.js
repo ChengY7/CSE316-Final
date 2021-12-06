@@ -25,10 +25,9 @@ export default function AppBanner() {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
-
     const handleLogout = () => {
         handleMenuClose();
-        auth.logoutUser();
+        auth.logoutUser(store);
     }
     const handleCloseCurrentList = () => {
         store.closeCurrentList();

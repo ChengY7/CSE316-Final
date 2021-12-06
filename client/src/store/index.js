@@ -380,11 +380,51 @@ function GlobalStoreContextProvider(props) {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
+    store.search = async function (text) {
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+            let newPairsArray=[];
+            if (store.mode==="home") {
+                for (let i = 0; i<pairsArray.length; i++) {
+                    if (pairsArray[i].ownerEmail===auth.user.email) {
+                        newPairsArray.push(pairsArray[i]);
+                    }
+                }
+            }
+            else if (store.mode==="all") {
+                for (let i = 0; i<pairsArray.length; i++) {
+                    if (pairsArray[i].published) {
+                        newPairsArray.push(pairsArray[i]);
+                    }
+                }
+            }
+            let filteredPairsArray = []
+            if (store.mode==="home" || store.mode==="all") {
+                for (let i=0; i<newPairsArray.length; i++) {
+                    if (newPairsArray[i].name.toLowerCase()===text.toLowerCase()) {
+                        filteredPairsArray.push(newPairsArray[i])
+                    }
+                }
+            }
+            else if (store.mode==="user") {
+                for (let i=0; i<pairsArray.length; i++) {
+                    if (pairsArray[i].published && pairsArray[i].ownerUserName.toLowerCase().startsWith(text.toLowerCase())) {
+                        filteredPairsArray.push(pairsArray[i])
+                    }
+                }
+            }
+            console.log(filteredPairsArray)
+            storeReducer({ 
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: filteredPairsArray
+            });
+        }
+    }
     
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
-        console.log("buggggg")
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             document.getElementById("top5-statusbar").style.visibility = "visible";

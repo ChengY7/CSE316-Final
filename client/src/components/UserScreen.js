@@ -10,11 +10,30 @@ const UserScreen = () => {
     useEffect(() => {
         store.loadIdNamePairs();
     }, []);
+    let listCard = "";
+    if (store) {
+        listCard = 
+            <List sx={{ width: '90%', left: '5%', bgcolor: '#c4c4c4'}}>
+            {
+                store.idNamePairs.map((pair) => (
+                    <ListCard
+                        key={pair._id}
+                        idNamePair={pair}
+                        selected={false}
+                    />
+                ))
+            }
+            </List>;
+    }
 
     return (
-        <div>
+        <div id="top5-list-selector">
             <Toolbar />
-            <div>User</div>
+            <div id="list-selector-list">
+                {
+                    listCard
+                }
+            </div>
         </div>
     )
 

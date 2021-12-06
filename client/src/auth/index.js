@@ -123,7 +123,7 @@ function AuthContextProvider(props) {
             //store.loadIdNamePairs();
         }
     }
-    auth.logoutUser = async function() {
+    auth.logoutUser = async function(store) {
         await api.logoutUser();
         document.getElementById("top5-statusbar").style.visibility = "hidden";
         authReducer({
@@ -133,6 +133,7 @@ function AuthContextProvider(props) {
             }
         })
         history.push("/");
+        store.changeMode("home")
     }
     auth.registerUser = async function(userData, store) {
         console.log(userData)

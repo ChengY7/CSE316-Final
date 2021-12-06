@@ -15,15 +15,23 @@ function Toolbar() {
     const { store } = useContext(GlobalStoreContext);
     function handleHome() {
         store.changeMode("home")
+        let button = document.getElementById("search-bar");
+        button.value="";
     }
     function handleGroup() {
         store.changeMode("all")
+        let button = document.getElementById("search-bar");
+        button.value="";
     }
     function handleUser() {
         store.changeMode("user")
+        let button = document.getElementById("search-bar");
+        button.value="";
     }
     function handleCommunity() {
         store.changeMode("community")
+        let button = document.getElementById("search-bar");
+        button.value="";
     }
     function handleSearch(event) {
         store.search(event.target.value);

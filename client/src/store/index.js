@@ -538,11 +538,11 @@ function GlobalStoreContextProvider(props) {
     }
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
-        //let button = document.getElementById("search-bar")
-        //console.log(button.value)
-        //if (button.value!=="") {
-            //return
-        //}
+        let button = document.getElementById("search-bar")
+        console.log(button.value)
+        if (button.value!=="") {
+            return
+        }
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             document.getElementById("top5-statusbar").style.visibility = "visible";

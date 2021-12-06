@@ -28,6 +28,8 @@ function ListCard(props) {
      const [refresh, setRefresh] = useState(false);
      useEffect(() => {
         store.loadIdNamePairs();
+        let button=document.getElementById("search-bar")
+        store.search(button.value)
     }, [expandListActive, refresh]);
     const { idNamePair } = props;
     let dateArray;

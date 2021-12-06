@@ -20,6 +20,7 @@ const HomeScreen = () => {
     function handleCreateNewList() {
         store.createNewList();
     }
+    
     let listCard = "";
     if (store && store.tempidNamePairs!==null) {
         listCard = 

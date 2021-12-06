@@ -40,7 +40,7 @@ export default function DeleteModal() {
   
 
   return (
-    <div>
+    <div >
       <Modal
         open={open2}
         onClose={handleClose}

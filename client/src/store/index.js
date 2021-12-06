@@ -228,6 +228,9 @@ function GlobalStoreContextProvider(props) {
                 }
                 store.updateCurrentList();
                 store.closeCurrentList();
+                store.changeMode(store.mode)
+                let button2=document.getElementById("search-bar");
+                button2.value=""
     }
     store.PublishList = async function () {
         store.UpdateList().then(() => {
@@ -502,6 +505,9 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             store.loadIdNamePairs();
             history.push("/");
+            store.changeMode(store.mode)
+            let button=document.getElementById("search-bar");
+            button.value=""
         }
     }
 

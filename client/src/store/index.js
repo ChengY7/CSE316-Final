@@ -596,6 +596,8 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             store.loadIdNamePairs();
             history.push("/");
+            let button=document.getElementById("search-bar")
+            store.search(button.value)
         }
     }
 

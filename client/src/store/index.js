@@ -490,6 +490,13 @@ function GlobalStoreContextProvider(props) {
             let button = document.getElementById("publish-button");
             button.style.opacity="20%";
             button.style.pointerEvents="none";
+            let button2 = document.getElementById("toolbar");
+            button2.style.opacity="20%";
+            button2.style.pointerEvents="none";
+            let button8 = document.getElementById("top5-statusbar");
+            button8.style.opacity="20%";
+            button8.style.pointerEvents="none";
+
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");

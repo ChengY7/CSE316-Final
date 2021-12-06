@@ -16,28 +16,25 @@ function Toolbar() {
     function handleHome() {
         store.changeMode("home")
     }
-    function handleGroup(event) {
+    function handleGroup() {
         store.changeMode("all")
     }
-    function handleUser(event) {
+    function handleUser() {
         store.changeMode("user")
     }
-    function handleCommunity(event) {
+    function handleCommunity() {
         store.changeMode("community")
     }
     function handleSearch(event) {
-        if (event.code === "Enter") {
-            store.search(event.target.value);
-        }
+        store.search(event.target.value);
     }
-
     return (
         <div id="toolbar">
             <HomeOutlinedIcon onClick={handleHome} id="home-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
             <GroupsOutlinedIcon onClick={handleGroup} id="group-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
             <PersonOutlineOutlinedIcon onClick={handleUser} id="person-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
             <FunctionsOutlinedIcon onClick={handleCommunity} id="community-button" style={{cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>
-            <input onKeyPress={(event) => {handleSearch(event)}} id="search-bar" type="text" placeholder="Search" style={{position: "absolute", top: "17px", width: "500px", fontSize: "24px"}}>
+            <input onChange={(event) => {handleSearch(event)}} id="search-bar" type="text" placeholder="Search" style={{position: "absolute", top: "17px", width: "500px", fontSize: "24px"}}>
             </input>
             <Typography id="sort-by" display="inline" style={{position: "absolute", right: "100px", top: "22px"}} variant="h2" sx={{fontWeight: 600, fontSize: 25}}>SORT BY</Typography>
             <SortIcon id="sort-button" style={{position: "absolute", right: "10px", cursor:'pointer', padding: "10px"}} sx={{ fontSize: 50 }}/>

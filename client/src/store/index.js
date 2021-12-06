@@ -24,7 +24,8 @@ export const GlobalStoreActionType = {
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     UPDATE_TEMP_LIST_INFO: "UPDATE_TEMP_LIST_INFO",
     SET_EXPAND_LIST_ACTIVE: "SET_EXPAND_LIST_ACTIVE",
-    CHANGE_MODE: "CHANGE_MODE"
+    CHANGE_MODE: "CHANGE_MODE",
+    UPDATE_TEMP_IDNAMEPAIRS: "UPDATE_TEMP_IDNAMEPAIRS"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -41,7 +42,8 @@ function GlobalStoreContextProvider(props) {
         listMarkedForDeletion: null,
         tempListInfo: [],
         isExpandListActive: false,
-        mode: "home"
+        mode: "home",
+        tempidNamePairs: null
     });
     const history = useHistory();
 
@@ -62,8 +64,21 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: store.tempListInfo,
                     isExpandListActive: store.isExpandListActive,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 });
+            }
+            case GlobalStoreActionType.UPDATE_TEMP_IDNAMEPAIRS: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    listMarkedForDeletion: store.listMarkedForDeletion,
+                    tempListInfo: store.tempListInfo,
+                    isExpandListActive: store.isExpandListActive,
+                    mode: store.mode,
+                    tempidNamePairs: payload
+                })
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
                 return setStore({
@@ -73,7 +88,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: payload,
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 })
             }
             // STOP EDITING THE CURRENT LIST
@@ -85,7 +101,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo:[],
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 })
             }
             // CREATE A NEW LIST
@@ -97,7 +114,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: payload.tempListInfo,
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -109,7 +127,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: [],
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -121,7 +140,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: payload,
                     tempListInfo: [],
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -133,7 +153,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: [],
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             // UPDATE A LIST
@@ -145,7 +166,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: payload.tempListInfo,
                     isExpandListActive: false,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             case GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE: {
@@ -156,7 +178,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     tempListInfo: [],
                     isExpandListActive: true,
-                    mode: store.mode
+                    mode: store.mode,
+                    tempidNamePairs: store.tempidNamePairs
                 });
             }
             case GlobalStoreActionType.CHANGE_MODE: {
@@ -167,7 +190,8 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: store.listMarkedForDeletion,
                     tempListInfo: store.tempListInfo,
                     isExpandListActive: store.isExpandListActive,
-                    mode: payload
+                    mode: payload,
+                    tempidNamePairs: null
                 })
             }
             default:
@@ -402,21 +426,21 @@ function GlobalStoreContextProvider(props) {
             let filteredPairsArray = []
             if (store.mode==="home" || store.mode==="all") {
                 for (let i=0; i<newPairsArray.length; i++) {
-                    if (newPairsArray[i].name.toLowerCase()===text.toLowerCase()) {
+                    if (newPairsArray[i].name.toLowerCase().startsWith(text.toLowerCase())) {
                         filteredPairsArray.push(newPairsArray[i])
                     }
                 }
             }
             else if (store.mode==="user") {
                 for (let i=0; i<pairsArray.length; i++) {
-                    if (pairsArray[i].published && pairsArray[i].ownerUserName.toLowerCase().startsWith(text.toLowerCase())) {
+                    if (pairsArray[i].published && pairsArray[i].ownerUserName.toLowerCase()===text.toLowerCase()) {
                         filteredPairsArray.push(pairsArray[i])
                     }
                 }
             }
             console.log(filteredPairsArray)
             storeReducer({ 
-                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                type: GlobalStoreActionType.UPDATE_TEMP_IDNAMEPAIRS,
                 payload: filteredPairsArray
             });
         }

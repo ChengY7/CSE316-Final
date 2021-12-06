@@ -21,7 +21,22 @@ const HomeScreen = () => {
         store.createNewList();
     }
     let listCard = "";
-    if (store) {
+    if (store && store.tempidNamePairs!==null) {
+        listCard = 
+            <List sx={{ width: '90%', left: '5%', bgcolor: '#c4c4c4'}}>
+            {
+                store.tempidNamePairs.map((pair) => (
+                    <ListCard
+                        key={pair._id}
+                        idNamePair={pair}
+                        selected={false}
+                    />
+                ))
+            }
+            <DeleteModal />
+            </List>;
+    }
+    else if (store) {
         listCard = 
             <List sx={{ width: '90%', left: '5%', bgcolor: '#c4c4c4'}}>
             {

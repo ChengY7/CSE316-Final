@@ -32,6 +32,7 @@ function Toolbar() {
         store.changeMode("community")
         let button = document.getElementById("search-bar");
         button.value="";
+        store.updateCommunityList()
     }
     function handleSearch(event) {
         store.search(event.target.value);

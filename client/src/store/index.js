@@ -42,6 +42,7 @@ function GlobalStoreContextProvider(props) {
         tempListInfo: [],
         isExpandListActive: false,
         mode: "home",
+        communityList: []
     });
     const history = useHistory();
 
@@ -63,6 +64,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: store.tempListInfo,
                     isExpandListActive: store.isExpandListActive,
                     mode: store.mode,
+                    communityList: store.communityList
                 });
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
@@ -74,6 +76,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: payload,
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 })
             }
             // STOP EDITING THE CURRENT LIST
@@ -86,6 +89,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo:[],
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 })
             }
             // CREATE A NEW LIST
@@ -98,6 +102,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: payload.tempListInfo,
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -110,6 +115,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -122,6 +128,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -134,6 +141,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 });
             }
             // UPDATE A LIST
@@ -146,6 +154,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: payload.tempListInfo,
                     isExpandListActive: false,
                     mode: store.mode,
+                    communityList: store.communityList
                 });
             }
             case GlobalStoreActionType.SET_EXPAND_LIST_ACTIVE: {
@@ -157,6 +166,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: [],
                     isExpandListActive: true,
                     mode: store.mode,
+                    communityList: store.communityList
                 });
             }
             case GlobalStoreActionType.CHANGE_MODE: {
@@ -168,6 +178,7 @@ function GlobalStoreContextProvider(props) {
                     tempListInfo: store.tempListInfo,
                     isExpandListActive: store.isExpandListActive,
                     mode: payload,
+                    communityList: store.communityList
                 })
             }
             default:
@@ -213,6 +224,82 @@ function GlobalStoreContextProvider(props) {
             store.updateCurrentList();
         })
     }
+    store.updateCommunityList = async function () {
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+            let community = []
+            for (let i=0; i<pairsArray.length; i++) {
+                if (pairsArray[i].published) {
+                let sameName = false;
+                for (let j=0; j<community.length; j++) {
+                    console.log(community)
+                    if (community[j].name.toLowerCase()===pairsArray[i].name.toLowerCase()) {
+                         let tempCommunityList=community[j];
+                         let tempCommunityItems = [];
+                         for (let k=0; k<pairsArray[i].items.length; k++) {
+                            let points = 5-k;
+                            let item = points+" "+pairsArray[i].items[k];
+                            tempCommunityItems[k]=item;
+                        }
+                        for (let z=0; z<tempCommunityItems.length; z++) {
+                            let itemExist=false
+                            for (let k=0; k<tempCommunityList.items.length; k++) {
+                                let firstIndexExistItem = tempCommunityList.items[k].indexOf(" ")
+                                let firstIndexTempItem = tempCommunityItems[z].indexOf(" ")
+                                let pointsNameExistItem = tempCommunityList.items[k].substring(0, firstIndexExistItem);
+                                let pointsNameTempItem = tempCommunityItems[z].substring(0, firstIndexTempItem);
+                                firstIndexExistItem++;
+                                firstIndexTempItem++;
+                                let itemNameExistItem = tempCommunityList.items[k].substring(firstIndexExistItem).toLowerCase();
+                                let itemNameTempItem = tempCommunityItems[z].substring(firstIndexTempItem);
+                                if (itemNameTempItem===itemNameExistItem) {
+                                    let intExistPoint=parseInt(pointsNameExistItem);
+                                    let intTempPoint=parseInt(pointsNameTempItem);
+                                    intExistPoint=intExistPoint+intTempPoint;
+                                    let newItem=intExistPoint+" "+itemNameExistItem;
+                                    ///////
+                                    tempCommunityList.items.splice(k, 1, newItem)
+                                    itemExist=true
+                                }
+
+                            }
+                            if (!itemExist) {
+                                tempCommunityList.items.push(tempCommunityItems[z])
+
+                            }
+                        }
+                        community[j].items=tempCommunityList.items;
+                        community[j].updatedDate=new Date();
+                        sameName=true;
+                    }
+                }
+                if (!sameName) {
+                    let communityName = pairsArray[i].name;
+                    let communityItems = [];
+                    for (let k=0; k<pairsArray[i].items.length; k++) {
+                        let points = 5-k;
+                        let item = points+" "+pairsArray[i].items[k].toLowerCase();
+                        communityItems[k]=item;
+                    }
+                    let communityLikes = [];
+                    let communityDislikes = [];
+                    let communityViews = "0"
+                    const communityList ={
+                        name: communityName,
+                        items: communityItems,
+                        likes: communityLikes,
+                        dislikes: communityDislikes,
+                        views: communityViews,
+                        updatedDate: new Date()
+                    }
+                    community.push(communityList)
+                }
+            }
+            }
+            console.log(community)
+        }
+    }
     store.addViews = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
@@ -226,10 +313,10 @@ function GlobalStoreContextProvider(props) {
             console.log(top5List.views)
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.sucess) {
+                if (response.data.success) {
                     async function getListPairs(top5List) {
                         const response = await api.getTop5ListPairs();
-                        if (response.data.sucess) {
+                        if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
@@ -267,10 +354,10 @@ function GlobalStoreContextProvider(props) {
             top5List.likes=likes
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.sucess) {
+                if (response.data.success) {
                     async function getListPairs(top5List) {
                         const response = await api.getTop5ListPairs();
-                        if (response.data.sucess) {
+                        if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
@@ -308,10 +395,10 @@ function GlobalStoreContextProvider(props) {
             top5List.dislikes = dislikes;
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.sucess) {
+                if (response.data.success) {
                     async function getListPairs(top5List) {
                         const response = await api.getTop5ListPairs();
-                        if (response.data.sucess) {
+                        if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
@@ -335,10 +422,10 @@ function GlobalStoreContextProvider(props) {
             top5List.comments.push(comment);
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.sucess) {
+                if (response.data.success) {
                     async function getListPairs(top5List) {
                         const response = await api.getTop5ListPairs();
-                        if (response.data.sucess) {
+                        if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,

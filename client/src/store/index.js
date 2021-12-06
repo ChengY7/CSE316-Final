@@ -204,7 +204,7 @@ function GlobalStoreContextProvider(props) {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
-    store.changeMode = function (mode) {
+    store.changeMode = async function (mode) {
         storeReducer({
             type: GlobalStoreActionType.CHANGE_MODE,
             payload: mode

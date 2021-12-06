@@ -67,6 +67,8 @@ function ListCard(props) {
                 toggleRefresh();
             });
             event.currentTarget.value="";
+            store.changeMode(store.mode);
+            
         }
     }
     async function handleDeleteList(event, id) {

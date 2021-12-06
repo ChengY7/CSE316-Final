@@ -14,7 +14,6 @@ export default function HomeWrapper() {
     
     if (auth.loggedIn) {
         if (store.mode==="home") {
-        
             return <HomeScreen />
         }
         else if (store.mode==="all") {

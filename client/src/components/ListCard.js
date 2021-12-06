@@ -42,6 +42,11 @@ function ListCard(props) {
         dateArray[2]=date;
         dateArray[1]=months[month-1]
     }
+    let communityDate="";
+    if (store.mode==="community") {
+        let communityDateArray = idNamePair.updatedDate.toString().split(" ")
+        communityDate = communityDateArray[1]+" "+communityDateArray[2]+", "+communityDateArray[3]
+    }
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -56,6 +61,7 @@ function ListCard(props) {
         });
     }
     function toggleExpand() {
+        console.log(expandListActive)
         let newExpandActive = !expandListActive;
         if (newExpandActive) {
             store.setIsExpandListActive();
@@ -115,12 +121,121 @@ function ListCard(props) {
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
-                    <IconButton  onClick={expandList} aria-label='expand'>
+                    <IconButton  onClick={toggleExpand} aria-label='expand'>
                         <ExpandMoreIcon style={{fontSize:'28pt'}} />
                     </IconButton>
                 </Box>
         </ListItem>
-    if (store.mode!=="home" && expandListActive && idNamePair.publishedDate) {
+    if (store.mode==="community" && !expandListActive) {
+        cardElement=
+        <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            sx={{ marginTop: '15px', display: 'flex', p: 5, backgroundColor: "#d4d4f5", border: "1.5px solid black", padding: "48px", borderRadius: "10px", paddingRight: "1180px", position: "auto", right: "50px"}}
+            style={{
+                fontSize: '16pt',
+                width: '100%',
+                fontWeight: "bold",
+            }}
+        >
+                <Box style={{position: "absolute", top: "0px", left: "5px"}} sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+                <Typography display="inline" style={{position: "absolute", left: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
+                <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>
+                <Typography display="inline" style={{position: "absolute", left: "80px", bottom: "10px", color: "#69b15e"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{communityDate}</Typography>
+                <Typography display="inline" style={{position: "absolute", right: "234px", bottom:"10px" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Views:</Typography>
+                <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
+                <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
+                    <IconButton onClick={(event) => {handleLike(event)}} aria-label='like'>
+                        <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+                <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
+                    <IconButton onClick={(event) => {handleDislike(event)}} aria-label='dislike'>
+                        <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
+                    <IconButton onClick={toggleExpand} aria-label='expand'>
+                        <ExpandMoreIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+        </ListItem>
+    }
+    else if (store.mode==="community" && expandListActive) {
+        console.log(store.communityList)
+        commentElement=
+            <List sx={{ width: '90%', left: '5%'}}>
+            {
+                idNamePair.comments.slice(0).reverse().map((comment) => (
+                    <CommentCard 
+                        comment={comment}
+                    />
+                ))
+            }
+            </List>;
+
+        cardElement=
+        <ListItem
+        id={idNamePair._id}
+        key={idNamePair._id}
+        sx={{ marginTop: '15px', display: 'flex', p: 5, backgroundColor: "#d4d4f5", border: "1.5px solid black", padding: "175px", borderRadius: "10px", paddingRight: "1052px", position: "auto", right: "50px"}}
+        style={{
+            fontSize: '16pt',
+            width: '100%',
+            fontWeight: "bold",
+        }}
+    >
+            <Box style={{position: "absolute", top: "0px", left: "5px"}} sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+            <Typography display="inline" style={{position: "absolute", left: "14px", top: "40px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>By:</Typography>
+            <Typography display="inline" style={{position: "absolute", left: "40px", top: "40px", color: "#2f2efc", textDecoration: "underline"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.ownerUserName}</Typography>
+            <Box style={{position: "absolute", top: "60px", left: "10px"}} sx={{backgroundColor:"#2c2f70", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>1.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[0]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>2.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[1]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>3.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[2]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>4.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[3]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>5.</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[4]}</Typography>
+            </Box>
+            <Box style={{position: "absolute", top: "48px", left: "565px"}} sx={{ padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
+                <div id="comment-list">
+                {
+                    commentElement
+                }
+                </div>
+                <input id={idNamePair._id} maxLength="250" onKeyPress={handleKeyPress} type="text" placeholder="Add Comment (max length 250)" style={{position: "absolute", left:"31px", top: "232.5px", width: "562px", fontSize: "16px", borderRadius: "10px", border: "none", padding:"10px"}}>
+                </input>
+            </Box>
+            <Typography display="inline" style={{position: "absolute", left: "14px", bottom: "10px", color: "black"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>published:</Typography>
+            <Typography display="inline" style={{position: "absolute", left: "80px", bottom: "10px", color: "#69b15e"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{communityDate}</Typography>
+            <Typography display="inline" style={{position: "absolute", right: "234px", bottom:"10px" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>Views:</Typography>
+                <Typography display="inline" style={{position: "absolute", right: "210px", bottom:"10px", color:"#be413c" }} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{idNamePair.views}</Typography>
+            <Typography display="inline" style={{position: "absolute", top: "25px", right: "205px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.likes.length}</Typography>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "220px", top: "0"}}>
+                    <IconButton onClick={(event) => {handleLike(event)}} aria-label='like'>
+                        <ThumbUpOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+                <Typography display="inline" style={{position: "absolute", top: "25px", right: "90px"}} variant="h2" sx={{fontWeight: 600, fontSize: 20}}>{idNamePair.dislikes.length}</Typography>
+                <Box sx={{ p: 1 }} style={{position: "absolute", right: "105px", top: "0"}} >
+                    <IconButton onClick={(event) => {handleDislike(event)}} aria-label='dislike'>
+                        <ThumbDownOutlinedIcon style={{fontSize:'28pt'}} />
+                    </IconButton>
+                </Box>
+            <Box sx={{ p: 0 }} style={{position: "absolute", right: "7px", bottom: "0"}} >
+                <IconButton onClick={toggleExpand} aria-label='expand'>
+                    <ExpandLessIcon style={{fontSize:'28pt'}} />
+                </IconButton>
+            </Box>
+    </ListItem>
+
+    }
+    else if (store.mode!=="home" && expandListActive && idNamePair.publishedDate) {
         commentElement=
             <List sx={{ width: '90%', left: '5%'}}>
             {
@@ -190,7 +305,7 @@ function ListCard(props) {
             </Box>
     </ListItem>
     }
-    else if (store.mode!=="home" && idNamePair.publishedDate) {
+    else if (store.mode!=="home" && idNamePair.publishedD) {
         cardElement=
         <ListItem
             id={idNamePair._id}
@@ -228,7 +343,7 @@ function ListCard(props) {
                 </Box>
         </ListItem>
     }
-    else if (expandListActive && idNamePair.publishedDate) {
+    else if (expandListActive && idNamePair.published) {
         commentElement=
             <List sx={{ width: '90%', left: '5%'}}>
             {

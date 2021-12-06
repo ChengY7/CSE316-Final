@@ -8,13 +8,32 @@ const CommunityScreen = () => {
     const { store } = useContext(GlobalStoreContext)
 
     useEffect(() => {
-        store.loadIdNamePairs();
+        store.updateCommunityList();
     }, []);
+    let listCard = "";
+    if (store) {
+        listCard = 
+            <List sx={{ width: '90%', left: '5%', bgcolor: '#c4c4c4'}}>
+            {
+                store.communityList.map((pair) => (
+                    <ListCard
+                        key={pair._id}
+                        idNamePair={pair}
+                        selected={false}
+                    />
+                ))
+            }
+            </List>;
+    }
 
     return (
-        <div>
+        <div id="top5-list-selector">
             <Toolbar />
-            <div>Community</div>
+            <div id="list-selector-list">
+                {
+                    listCard
+                }
+            </div>
         </div>
     )
 

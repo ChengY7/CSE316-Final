@@ -25,6 +25,7 @@ export const GlobalStoreActionType = {
     UPDATE_TEMP_LIST_INFO: "UPDATE_TEMP_LIST_INFO",
     SET_EXPAND_LIST_ACTIVE: "SET_EXPAND_LIST_ACTIVE",
     CHANGE_MODE: "CHANGE_MODE",
+    UPDATE_COMMUNITY_LIST: "UPDATE_COMMUNITY_LIST",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -66,6 +67,18 @@ function GlobalStoreContextProvider(props) {
                     mode: store.mode,
                     communityList: store.communityList
                 });
+            }
+            case GlobalStoreActionType.UPDATE_COMMUNITY_LIST: {
+                return setStore({
+                    idNamePairs: [],
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    listMarkedForDeletion: store.listMarkedForDeletion,
+                    tempListInfo: store.tempListInfo,
+                    isExpandListActive: store.isExpandListActive,
+                    mode: store.mode,
+                    communityList: payload
+                })
             }
             case GlobalStoreActionType.UPDATE_TEMP_LIST_INFO: {
                 return setStore({
@@ -233,7 +246,6 @@ function GlobalStoreContextProvider(props) {
                 if (pairsArray[i].published) {
                 let sameName = false;
                 for (let j=0; j<community.length; j++) {
-                    console.log(community)
                     if (community[j].name.toLowerCase()===pairsArray[i].name.toLowerCase()) {
                          let tempCommunityList=community[j];
                          let tempCommunityItems = [];
@@ -291,13 +303,18 @@ function GlobalStoreContextProvider(props) {
                         likes: communityLikes,
                         dislikes: communityDislikes,
                         views: communityViews,
-                        updatedDate: new Date()
+                        updatedDate: new Date(),
+                        publishedDate: null,
+                        comments: []
                     }
                     community.push(communityList)
                 }
             }
             }
-            console.log(community)
+            storeReducer({
+                type: GlobalStoreActionType.UPDATE_COMMUNITY_LIST,
+                payload: community
+            });
         }
     }
     store.addViews = async function (id) {
@@ -623,7 +640,6 @@ function GlobalStoreContextProvider(props) {
                     }
                 }
             }
-            console.log(filteredPairsArray)
             storeReducer({ 
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: filteredPairsArray
@@ -632,8 +648,8 @@ function GlobalStoreContextProvider(props) {
     }
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
+        console.log(store.idNamePairs)
         let button = document.getElementById("search-bar")
-        console.log(button.value)
         if (button.value!=="") {
             return
         }

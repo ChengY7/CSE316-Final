@@ -43,9 +43,36 @@ function ListCard(props) {
         dateArray[1]=months[month-1]
     }
     let communityDate="";
+    let firstItem = "";
+    let secondItem = "";
+    let thirdItem = "";
+    let fourthItem = "";
+    let fifthItem = "";
+    let firstVotes = "";
+    let secondVotes = "";
+    let thirdVotes = "";
+    let fourthVotes= "";
+    let fifthVotes = "";
     if (store.mode==="community") {
         let communityDateArray = idNamePair.updatedDate.toString().split(" ")
         communityDate = communityDateArray[1]+" "+communityDateArray[2]+", "+communityDateArray[3]
+        let firstIndex = idNamePair.items[0].indexOf(" ")
+        let secondIndex = idNamePair.items[1].indexOf(" ")
+        let thirdIndex = idNamePair.items[2].indexOf(" ")
+        let fourthIndex = idNamePair.items[3].indexOf(" ")
+        let fifthIndex = idNamePair.items[4].indexOf(" ")
+        firstVotes = "("+idNamePair.items[0].substring(0, firstIndex)+" Votes)"
+        secondVotes = "("+idNamePair.items[1].substring(0, secondIndex)+" Votes)"
+        thirdVotes = "("+idNamePair.items[2].substring(0, thirdIndex)+" Votes)"
+        fourthVotes = "("+idNamePair.items[3].substring(0, fourthIndex)+" Votes)"
+        fifthVotes = "("+idNamePair.items[4].substring(0, fifthIndex)+" Votes)"
+        firstItem = idNamePair.items[0].substring(firstIndex);
+        secondItem = idNamePair.items[1].substring(secondIndex)
+        thirdItem = idNamePair.items[2].substring(thirdIndex)
+        fourthItem = idNamePair.items[3].substring(fourthIndex)
+        fifthItem = idNamePair.items[4].substring(fifthIndex)
+
+        let votes = idNamePair
     }
 
     function handleLoadList(event, id) {
@@ -195,15 +222,20 @@ function ListCard(props) {
             <Box style={{position: "absolute", top: "0px", left: "5px"}} sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             <Box style={{position: "absolute", top: "60px", left: "10px"}} sx={{backgroundColor:"#2c2f70", padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>1.</Typography>
-                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[0]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "20px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{firstItem}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "40px", top: "45px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{firstVotes}</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>2.</Typography>
-                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[1]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "70px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{secondItem}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "40px", top: "95px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{secondVotes}</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>3.</Typography>
-                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[2]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "120px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{thirdItem}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "40px", top: "145px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{thirdVotes}</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>4.</Typography>
-                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[3]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "170px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{fourthItem}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "40px", top: "195px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{fourthVotes}</Typography>
                 <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "14px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>5.</Typography>
-                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{idNamePair.items[4]}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "50px", top: "220px"}} variant="h0" sx={{fontWeight: 600, fontSize: 24}}>{fifthItem}</Typography>
+                <Typography display="inline" style={{color: "#d3b036", position: "absolute", left: "40px", top: "245px"}} variant="h0" sx={{fontWeight: 600, fontSize: 14}}>{fifthVotes}</Typography>
             </Box>
             <Box style={{position: "absolute", top: "48px", left: "565px"}} sx={{ padding: "130px", borderRadius: "10px", paddingRight: "450px"}}>
                 <div id="comment-list">

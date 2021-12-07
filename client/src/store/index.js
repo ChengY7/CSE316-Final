@@ -236,6 +236,10 @@ function GlobalStoreContextProvider(props) {
             store.currentList.comments = [];
             store.updateCurrentList();
         })
+        storeReducer({
+            type: GlobalStoreActionType.UPDATE_COMMUNITY_LIST,
+            payload: store.communityList
+        });
     }
     store.updateCommunityList = async function () {
         const response = await api.getTop5ListPairs();
@@ -678,7 +682,6 @@ function GlobalStoreContextProvider(props) {
         if (type==="dislikes") {
             store.idNamePairs = store.idNamePairs.sort(compareDislikes);
         }
-
         storeReducer({ 
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
             payload: store.idNamePairs

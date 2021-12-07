@@ -625,11 +625,60 @@ function GlobalStoreContextProvider(props) {
         }
         return 0
     }
+    function compareLikes(a,b) {
+        if (a.likes.length < b.likes.length) {
+            return 1
+        }
+        if (a.likes.length > b.likes.length) {
+            return -1
+        }
+        return 0
+    }
+    function compareDislikes(a,b) {
+        if (a.dislikes.length < b.dislikes.length) {
+            return 1
+        }
+        if (a.dislikes.length > b.dislikes.length) {
+            return -1
+        }
+        return 0
+    }
+    function compareNewestDate(a,b) {
+        if (a.publishedDate < b.publishedDate) {
+            return 1
+        }
+        if (a.publishedDate > b.publishedDate) {
+            return -1
+        }
+        return 0
+    }
+    function compareOldestDate(a,b) {
+        if (a.publishedDate < b.publishedDate) {
+            return -1
+        }
+        if (a.publishedDate > b.publishedDate) {
+            return 1
+        }
+        return 0
+    }
     store.sort = async function (type) {
         let filteredPairsArray = []
+        if (type==="newest") {
+            store.idNamePairs = store.idNamePairs.sort(compareNewestDate);
+        }
+        if (type==="oldest") {
+            store.idNamePairs = store.idNamePairs.sort(compareOldestDate);
+        }
         if (type==="views") {
             store.idNamePairs = store.idNamePairs.sort(compareViews);
         }
+        if (type==="likes") {
+            store.idNamePairs = store.idNamePairs.sort(compareLikes);
+        }
+        if (type==="dislikes") {
+            store.idNamePairs = store.idNamePairs.sort(compareDislikes);
+        }
+
         storeReducer({ 
             type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
             payload: store.idNamePairs

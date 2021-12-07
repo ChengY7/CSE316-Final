@@ -324,7 +324,6 @@ function GlobalStoreContextProvider(props) {
                 view++;
                 let string = ""+view
                 store.communityList[i].view=string
-                console.log(store.communityList[i].view)
             }
         }
     }
@@ -616,6 +615,26 @@ function GlobalStoreContextProvider(props) {
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
+    }
+    function compareViews(a,b) {
+        if (a.views < b.views) {
+            return 1
+        }
+        if (a.views > b.views) {
+            return -1
+        }
+        return 0
+    }
+    store.sort = async function (type) {
+        let filteredPairsArray = []
+        if (type==="views") {
+            store.idNamePairs = store.idNamePairs.sort(compareViews);
+        }
+        storeReducer({ 
+            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload: store.idNamePairs
+        });
+        
     }
     store.search = async function (text) {
         const response = await api.getTop5ListPairs();
